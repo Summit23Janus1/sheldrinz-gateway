@@ -1,0 +1,69 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: sheldrinz-sheldrinz-poi-gateway-app-dev
+  annotations:
+    argocd/app-name: sheldrinz-sheldrinz-poi-gateway-app-dev
+    backstage.io/kubernetes-id: sheldrinz-sheldrinz-poi-gateway-app-dev
+    backstage.io/kubernetes-namespace: sheldrinz
+    backstage.io/kubernetes-label-selector: 'app.kubernetes.io/instance=sheldrinz-sheldrinz-poi-gateway-app-dev'
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: Summit23Janus1/sheldrinz-gateway
+    janus-idp.io/tekton-enabled: 'true'
+  tags:
+    - java
+    - quarkus
+    - maven
+    - workshop
+  links:
+    - url: https://console-openshift-console.apps.summit23rock.n26o.p1.openshiftapps.com/dev-pipelines/ns/sheldrinz/
+      title: Pipelines
+      icon: web
+    - url: https://console-openshift-console.apps.summit23rock.n26o.p1.openshiftapps.com/k8s/ns/sheldrinz/deployments/sheldrinz-poi-gateway-app
+      title: Deployment
+      icon: web
+    - url: https://devspaces.apps.summit23rock.n26o.p1.openshiftapps.com/#https://github.com/Summit23Janus1/sheldrinz-gateway?che-editor=che-incubator/che-code/latest&devfilePath=.devfile-vscode.yaml
+      title: OpenShift Dev Spaces (VS Code)
+      icon: web
+spec:
+  type: service
+  lifecycle: production
+  owner: "user:default/sheldrinzhu"
+  system: workshop-system-sheldrinz
+  providesApis:
+    - gateway-api-sheldrinz
+  consumesApis:
+    - backend-api-sheldrinz
+---
+apiVersion: backstage.io/v1alpha1
+kind: System
+metadata:
+  name: workshop-system-sheldrinz
+  tags:
+    - backstage
+    - janus-idp
+    - openshift
+    - workshop
+    - rh-summit
+spec:
+  owner: "user:default/sheldrinzhu"
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: gateway-api-sheldrinz
+  description: API surface exposed to interact with Backends (summit POIs + parks data) via the Gateway
+  links:
+    - url: http://sheldrinz-poi-gateway-app-sheldrinz.apps.summit23rock.n26o.p1.openshiftapps.com/q/swagger-ui
+      title: Swagger UI
+      icon: web
+    - url: https://github.com/Summit23Janus1/sheldrinz-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
+      title: API Spec
+      icon: code
+spec:
+  type: openapi
+  lifecycle: production
+  owner: "user:default/sheldrinzhu"
+  system: workshop-system-sheldrinz
+  definition:
+    $text: https://github.com/Summit23Janus1/sheldrinz-gateway/tree/main/src/main/resources/META-INF/openapi.yaml
